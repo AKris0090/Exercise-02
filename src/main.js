@@ -17,6 +17,9 @@ let config = {
     scene: [ Play ]
 }
 
+let wallBmoveSpeed = 3
+let wallB
+
 let game = new Phaser.Game(config)
 
 let { width, height } = game.config

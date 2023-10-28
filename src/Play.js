@@ -34,7 +34,7 @@ class Play extends Phaser.Scene {
         wallA.setX(Phaser.Math.Between(0 + wallA.width / 2, width - wallA.width / 2))
         wallA.body.setImmovable(true)
 
-        let wallB  = this.physics.add.sprite(0, height / 2, 'wall')
+        wallB  = this.physics.add.sprite(0, height / 2, 'wall').setOrigin(0, 0)
         wallB.setX(Phaser.Math.Between(0 + wallB.width / 2, width - wallB.width / 2))
         wallB.body.setImmovable(true)
 
@@ -70,7 +70,12 @@ class Play extends Phaser.Scene {
     }
 
     update() {
+        wallB.x -= wallBmoveSpeed;
 
+        // bounce back and forth
+        if(wallB.x <= 0 || wallB.x >= width - wallB.width) {
+            wallBmoveSpeed *= -1;
+        }
     }
 
     resetBall() {
