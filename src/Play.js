@@ -1,6 +1,8 @@
 class Play extends Phaser.Scene {
     constructor() {
         super('playScene')
+        this.numShots = 0
+        this.numScores = 0
     }
 
     preload() {
@@ -59,6 +61,7 @@ class Play extends Phaser.Scene {
             pointer.y <= this.ball.y ? shotDirectionY = 1 : shotDirectionY = -1
             this.ball.body.setVelocityX((Phaser.Math.Between(this.SHOT_VELOCITY_X_MIN, this.SHOT_VELOCITY_X_MAX) * shotDirectionX))
             this.ball.body.setVelocityY((Phaser.Math.Between(this.SHOT_VELOCITY_Y_MIN, this.SHOT_VELOCITY_Y_MAX) * shotDirectionY))
+            this.numShots += 1;
         })
 
         this.physics.add.collider(this.ball, this.cup, () => {
@@ -67,9 +70,24 @@ class Play extends Phaser.Scene {
 
         this.physics.add.collider(this.ball, this.walls)
         this.physics.add.collider(this.ball, this.oneWay)
+
+        let scoreConfig = {
+            fontFamily: 'Courier',
+            fontSize: '25px',
+            backgroundColor: '#000000',
+            color: '#FFFFFF',
+            align: 'right',
+            padding: {
+              top: 5,
+              bottom: 5,
+            },
+        }
+
+        this.scoreLeft = this.add.text(0, 0, `# shots: ${this.numShots}, # hole-ins: ${this.numScores}, shot %: ${(this.numScores / this.numShots) * 100}%`, scoreConfig);
     }
 
     update() {
+        this.scoreLeft.setText(`# shots: ${this.numShots}, # hole-ins: ${this.numScores}, shot %: ${((this.numScores / this.numShots) * 100).toFixed(2)}%`)
         wallB.x -= wallBmoveSpeed;
 
         // bounce back and forth
@@ -79,6 +97,7 @@ class Play extends Phaser.Scene {
     }
 
     resetBall() {
+        this.numScores+=1;
         this.ball.setVelocity(0, 0);
         this.ball.setX(width / 2);
         this.ball.setY( height - height / 10);
