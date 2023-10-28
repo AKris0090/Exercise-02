@@ -71,8 +71,8 @@ class Play extends Phaser.Scene {
     }
 
     resetBall() {
-        this.ball.setVelocity(0, 0)
-        this.ball.setX(width / 2)
-        this.ball.setY( height - height / 10)
+        this.ball.setVelocity(0, 0);
+        this.ball.setX(width / 2);
+        this.ball.setY( height - height / 10);
     }
 }
