@@ -47,21 +47,24 @@ class Play extends Phaser.Scene {
         this.oneWay.body.checkCollision.down = false
 
         // variables
-        this.SHOT_VELOCITY_X = 200
+        this.SHOT_VELOCITY_X_MIN = 50
+        this.SHOT_VELOCITY_X_MAX = 450
         this.SHOT_VELOCITY_Y_MIN = 700
         this.SHOT_VELOCITY_Y_MAX = 1100
 
         this.input.on('pointerdown', (pointer) => {
-            let shotDirection
-            pointer.y <= this.ball.y ? shotDirection = 1 : shotDirection = -1
-            this.ball.body.setVelocityX(Phaser.Math.Between(-this.SHOT_VELOCITY_X, this.SHOT_VELOCITY_X))
-            this.ball.body.setVelocityY((Phaser.Math.Between(this.SHOT_VELOCITY_Y_MIN, this.SHOT_VELOCITY_Y_MAX) * shotDirection))
-
+            let shotDirectionX
+            let shotDirectionY
+            pointer.x <= this.ball.x ? shotDirectionX = 1 : shotDirectionX = -1
+            pointer.y <= this.ball.y ? shotDirectionY = 1 : shotDirectionY = -1
+            this.ball.body.setVelocityX((Phaser.Math.Between(this.SHOT_VELOCITY_X_MIN, this.SHOT_VELOCITY_X_MAX) * shotDirectionX))
+            this.ball.body.setVelocityY((Phaser.Math.Between(this.SHOT_VELOCITY_Y_MIN, this.SHOT_VELOCITY_Y_MAX) * shotDirectionY))
         })
 
-        this.physics.add.collider(this.ball, this.cup, (ball, cup) => {
+        this.physics.add.collider(this.ball, this.cup, () => {
             this.resetBall();
         })
+
         this.physics.add.collider(this.ball, this.walls)
         this.physics.add.collider(this.ball, this.oneWay)
     }
